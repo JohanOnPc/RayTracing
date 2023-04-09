@@ -65,7 +65,31 @@ double Vector::DotProduct(const Vector& vec) const
 	return x * vec.x + y * vec.y + z * vec.z + w * vec.w;
 }
 
+Vector Vector::GetDirection() const
+{
+	return *this / Length();
+}
+
+Vector& Vector::Normalize()
+{
+	*this /= Length();
+	return *this;
+}
+
+
 std::ostream& operator<<(std::ostream& out, const Vector& vec)
 {
 	return out << "[" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << "]";
+}
+
+void WriteColor(std::ostream& out, const Vector& vec)
+{
+	float x, y, z;
+	x = static_cast<float>(vec.x);
+	y = static_cast<float>(vec.y);
+	z = static_cast<float>(vec.z);
+
+	out.write((const char*)&x, 4);
+	out.write((const char*)&y, 4);
+	out.write((const char*)&z, 4);
 }

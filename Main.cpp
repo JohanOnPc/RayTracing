@@ -1,10 +1,26 @@
 #include <iostream>
+#include <fstream>
 #include "Vector.h"
 
+#define WIDTH 2048
+#define HEIGHT 2048
+
 int main() {
-	Vector vec(1, 2);
-	Vector Vec(1, 2, 3);
-	auto vec3 = vec + Vec;
-	std::cout << ~(Vec + vec + vec3) << '\n';
-	return 0;
+	const int width = 512;
+	const int height = 512;
+
+	auto Image = new Vector[width][height];
+
+	std::ofstream file("image.ppm", std::ios::out | std::ios::binary);
+	file.imbue(std::locale::classic());
+
+	file << "PF" << ' ' << WIDTH << ' ' << HEIGHT << ' ' << "-1" << '\n';
+
+	for (int y = 0; y < HEIGHT; y++) {
+		for (int x = 0; x < WIDTH; x++) {
+			WriteColor(file, { double(x) / (WIDTH - 1), double(y) / (HEIGHT - 1), 0.5 });
+		}
+	}
+
+	file.close();
 }
