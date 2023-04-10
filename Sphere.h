@@ -7,13 +7,13 @@
 class Sphere 
 {
 public:
-	Sphere() : Origin{}, Radius{1.0} {}
-	Sphere(Vector Origin, double Radius) : Origin{Origin}, Radius{Radius} {}
+	Sphere() : origin{}, radius{1.0} {}
+	Sphere(Vector origin, double radius) : origin{origin}, radius{radius} {}
 
-	bool IsHitByRay(const Ray& ray) const;
+	double IsHitByRay(const Ray& ray) const;
 
 public:
-	Vector Origin;
-	double Radius;
+	Vector origin;
+	double radius;
 };
 

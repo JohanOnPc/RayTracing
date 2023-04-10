@@ -82,6 +82,11 @@ Vector Vector::GetNormal() const
 }
 
 
+double DotProduct(const Vector& vec1, const Vector& vec2)
+{
+	return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z + vec1.w * vec2.w;
+}
+
 std::ostream& operator<<(std::ostream& out, const Vector& vec)
 {
 	return out << "[" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << "]";

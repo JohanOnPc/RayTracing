@@ -30,6 +30,7 @@ public:
 	Vector& Normalize();
 	Vector GetNormal() const;
 
+	friend double DotProduct(const Vector&, const Vector&);
 	friend std::ostream& operator<<(std::ostream& out, const Vector&);
 
 public:
