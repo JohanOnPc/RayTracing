@@ -28,11 +28,10 @@ public:
 	double DotProduct(const Vector&) const;
 	Vector GetDirection() const;
 	Vector& Normalize();
+	Vector GetNormal() const;
 
 	friend std::ostream& operator<<(std::ostream& out, const Vector&);
 
 public:
 	double x, y, z, w;
 };
-
-void WriteColor(std::ostream& out, const Vector&);

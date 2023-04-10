@@ -76,20 +76,13 @@ Vector& Vector::Normalize()
 	return *this;
 }
 
+Vector Vector::GetNormal() const
+{
+	return *this / Length();
+}
+
 
 std::ostream& operator<<(std::ostream& out, const Vector& vec)
 {
 	return out << "[" << vec.x << ", " << vec.y << ", " << vec.z << ", " << vec.w << "]";
-}
-
-void WriteColor(std::ostream& out, const Vector& vec)
-{
-	float x, y, z;
-	x = static_cast<float>(vec.x);
-	y = static_cast<float>(vec.y);
-	z = static_cast<float>(vec.z);
-
-	out.write((const char*)&x, 4);
-	out.write((const char*)&y, 4);
-	out.write((const char*)&z, 4);
 }
