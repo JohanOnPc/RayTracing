@@ -3,14 +3,15 @@
 #include <math.h>
 #include "Vector.h"
 #include "Ray.h"
+#include "Hittable.h"
 
-class Sphere 
+class Sphere : public Hittable
 {
 public:
 	Sphere() : origin{}, radius{1.0} {}
 	Sphere(Vector origin, double radius) : origin{origin}, radius{radius} {}
 
-	double IsHitByRay(const Ray& ray) const;
+	virtual bool IsHitByRay(const Ray& ray, double tMin, double tMax, HitRecord& hit) const override;
 
 public:
 	Vector origin;

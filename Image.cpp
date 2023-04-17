@@ -24,7 +24,7 @@ Vector Image::GetPixel(int x, int y) const
 
 void Image::WriteImageTofile(std::string fileName) const
 {
-	std::ofstream file("image.ppm", std::ios::out | std::ios::binary);
+	std::ofstream file(fileName, std::ios::out | std::ios::binary);
 	file.imbue(std::locale::classic());
 
 	file << "PF" << ' ' << width << ' ' << heigth << ' ' << "-1" << '\n';
