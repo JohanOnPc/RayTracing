@@ -18,7 +18,7 @@ bool Sphere::IsHitByRay(const Ray& ray, double tMin, double tMax, HitRecord& hit
 			return false;
 		}
 	}
-
+	
 	hit.t = root;
 	hit.point = ray.at(root);
 	hit.normal = (hit.point - origin).GetNormal();

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <math.h>
 #include "Vector.h"
 #include "Ray.h"
 #include "Hittable.h"
