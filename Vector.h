@@ -17,6 +17,8 @@ public:
 	Vector& operator+= (const Vector&);
 	Vector operator- (const Vector&) const;
 	Vector& operator-= (const Vector&);
+	Vector operator* (const Vector&) const;
+	Vector& operator*= (const Vector&);
 	Vector operator* (const double t) const;
 	Vector& operator*= (const double t);
 	Vector operator/ (const double t) const;
@@ -29,12 +31,13 @@ public:
 	Vector GetDirection() const;
 	Vector& Normalize();
 	Vector GetNormal() const;
+	bool IsNearZero(double e = 0.000001) const;
 
 	static Vector GetRandom(double min = 0.0, double max = 1.0);
+	static Vector GetRandomVectorInUnitSphere();
 
 	friend double DotProduct(const Vector&, const Vector&);
 	friend std::ostream& operator<<(std::ostream& out, const Vector&);
-	static Vector GetRandomVectorInUnitSphere();
 
 public:
 	double x, y, z, w;

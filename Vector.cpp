@@ -25,6 +25,17 @@ Vector& Vector::operator-= (const Vector& vec)
 	return *this;
 }
 
+Vector Vector::operator*(const Vector& vec) const
+{
+	return Vector(x * vec.x, y * vec.y, z * vec.z, w * vec.w);
+}
+
+Vector& Vector::operator*=(const Vector& vec)
+{
+	*this = *this * vec;
+	return *this;
+}
+
 Vector Vector::operator* (const double t) const
 {
 	return Vector(x * t, y * t, z * t, w * t);
@@ -83,6 +94,11 @@ Vector Vector::GetNormal() const
 	return *this / Length();
 }
 
+bool Vector::IsNearZero(double e) const
+{
+	return (abs(x) < e) && (abs(y) < e) && (abs(z) < e) && (abs(w) < e);
+}
+
 Vector Vector::GetRandom(double min, double max)
 {
 	return Vector(Random(min, max), Random(min, max), Random(min, max));
@@ -97,8 +113,6 @@ Vector Vector::GetRandomVectorInUnitSphere()
 		}
 	}
 }
-
-
 
 double DotProduct(const Vector& vec1, const Vector& vec2)
 {

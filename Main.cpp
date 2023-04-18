@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <format>
+#include <filesystem>
 
 #include "Vector.h"
 #include "Camera.h"
@@ -9,14 +11,13 @@
 #include "Scene.h"
 #include "Hittable.h"
 #include "Utilities.h"
+#include "Lambertian.h"
+#include "Metal.h"
 
 constexpr auto WIDTH = 1600;
 constexpr auto HEIGHT = 900;
 constexpr auto samples = 16;
-constexpr auto maxDepth = 20;
-
-Sphere circle(Vector(0.0, 0.0, -1.0), 0.5);
-Sphere circle2(Vector(1.5, 0.0, -2.0), 1.4);
+constexpr auto maxDepth = 40;
 
 Vector RayColor(const Ray& ray, const Scene& scene, int depth) {
 	if (depth <= 0) {
@@ -24,9 +25,16 @@ Vector RayColor(const Ray& ray, const Scene& scene, int depth) {
 	}
 
 	HitRecord hit;
-	if (scene.IsHitByRay(ray, 0, infinity, hit)) {
-		Vector bounce = hit.point + hit.normal + Vector::GetRandomVectorInUnitSphere();
-		return RayColor(Ray(hit.point, bounce - hit.point), scene, depth - 1) * 0.5;
+	if (scene.IsHitByRay(ray, 0.0000001, infinity, hit)) {
+
+		Ray scatter;
+		Vector attenuation;
+		
+		if (hit.material->ScatterRay(ray, hit, attenuation, scatter)) {
+			return attenuation * RayColor(scatter, scene, depth - 1);
+		}
+
+		return Vector();
 	}
 	double t = 0.5 * ((ray.Direction).GetNormal().y + 1);
 	return Vector(1.0, 1.0, 1.0) * (1.0 - t) + Vector(0.0, 0.0, 1.0) * t;
@@ -36,11 +44,21 @@ int main() {
 	Image image(WIDTH, HEIGHT);
 	Camera camera;
 	Scene scene;
-	auto sphere = std::make_shared<Sphere>(Sphere({ 0.0, 0.0, -1.0 }, .5));
-	auto world = std::make_shared<Sphere>(Sphere({ 0.0, -100.5, -1.0 }, 100.0));
+
+	auto lambertianCenter = std::make_shared<Lambertian>(Lambertian(Vector(0.7, 0.3, 0.3)));
+	auto lambertianGround = std::make_shared<Lambertian>(Lambertian(Vector(0.8, 0.8, 0.0)));
+	auto metalLeft = std::make_shared<Metal>(Metal(Vector(0.8, 0.8, 0.8), 1.0));
+	auto metalRight = std::make_shared<Metal>(Metal(Vector(0.8, 0.6, 0.2), 1.0));
+
+	auto sphere = std::make_shared<Sphere>(Sphere({ 0.0, 0.0, -1.0 }, 0.5, lambertianCenter));
+	auto world = std::make_shared<Sphere>(Sphere({ 0.0, -100.5, -1.0 }, 100.0, lambertianGround));
+	auto left = std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, 0.5 , metalLeft));
+	auto right = std::make_shared<Sphere>(Sphere({ 1.0, 0.0, -1.0 }, 0.5, metalRight));
 
 	scene.AddObject(sphere);
 	scene.AddObject(world);
+	scene.AddObject(left);
+	scene.AddObject(right);
 
 	for (int y = 0; y < HEIGHT; y++) {
 		for (int x = 0; x < WIDTH; x++) {
@@ -53,9 +71,12 @@ int main() {
 			double sampleFactor = 1.0 / samples;
 			image.WritePixel(x, y, color * sampleFactor);
 		}
+
+		std::cout << std::format("Line {} of {}\n", y, HEIGHT);
 	}
 
-	image.WriteImageTofile("simpleSphereWithBounces.ppm");
+	std::filesystem::current_path(std::filesystem::path("images"));
+	image.WriteImageTofile("simpleSphereWithReflections.ppm");
 
 	return 0;
 }
