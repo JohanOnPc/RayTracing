@@ -1,6 +1,8 @@
 #include "Vector.h"
 #include <math.h>
 
+#include "Utilities.h"
+
 Vector Vector::operator+ (const Vector& vec) const 
 {
 	return Vector(x + vec.x, y + vec.y, z + vec.z, w + vec.w);
@@ -80,6 +82,22 @@ Vector Vector::GetNormal() const
 {
 	return *this / Length();
 }
+
+Vector Vector::GetRandom(double min, double max)
+{
+	return Vector(Random(min, max), Random(min, max), Random(min, max));
+}
+
+Vector Vector::GetRandomVectorInUnitSphere()
+{
+	while (true) {
+		Vector vec = Vector::GetRandom(-1.0, 1.0);
+		if (vec.LengthSquared() < 1.0) {
+			return vec;
+		}
+	}
+}
+
 
 
 double DotProduct(const Vector& vec1, const Vector& vec2)

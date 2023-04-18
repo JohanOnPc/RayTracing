@@ -30,8 +30,11 @@ public:
 	Vector& Normalize();
 	Vector GetNormal() const;
 
+	static Vector GetRandom(double min = 0.0, double max = 1.0);
+
 	friend double DotProduct(const Vector&, const Vector&);
 	friend std::ostream& operator<<(std::ostream& out, const Vector&);
+	static Vector GetRandomVectorInUnitSphere();
 
 public:
 	double x, y, z, w;
