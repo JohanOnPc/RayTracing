@@ -47,12 +47,12 @@ int main() {
 
 	auto lambertianCenter = std::make_shared<Lambertian>(Lambertian(Vector(0.7, 0.3, 0.3)));
 	auto lambertianGround = std::make_shared<Lambertian>(Lambertian(Vector(0.8, 0.8, 0.0)));
-	auto metalLeft = std::make_shared<Metal>(Metal(Vector(0.8, 0.8, 0.8), 1.0));
+	auto metalLeft = std::make_shared<Metal>(Metal(Vector(0.8, 0.8, 0.8), 0.3));
 	auto metalRight = std::make_shared<Metal>(Metal(Vector(0.8, 0.6, 0.2), 1.0));
 
 	auto sphere = std::make_shared<Sphere>(Sphere({ 0.0, 0.0, -1.0 }, 0.5, lambertianCenter));
 	auto world = std::make_shared<Sphere>(Sphere({ 0.0, -100.5, -1.0 }, 100.0, lambertianGround));
-	auto left = std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, 0.5 , metalLeft));
+	auto left = std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, 0.5, metalLeft));
 	auto right = std::make_shared<Sphere>(Sphere({ 1.0, 0.0, -1.0 }, 0.5, metalRight));
 
 	scene.AddObject(sphere);
@@ -76,7 +76,7 @@ int main() {
 	}
 
 	std::filesystem::current_path(std::filesystem::path("images"));
-	image.WriteImageTofile("simpleSphereWithReflections.ppm");
+	image.WriteImageTofile("simpleSphereWithFuzziness.ppm");
 
 	return 0;
 }
