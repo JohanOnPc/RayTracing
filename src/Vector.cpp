@@ -114,6 +114,11 @@ Vector Vector::GetRandomVectorInUnitSphere()
 	}
 }
 
+Vector operator*(const double t , const Vector& vec) 
+{
+	return vec * t;
+}
+
 double DotProduct(const Vector& vec1, const Vector& vec2)
 {
 	return vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z + vec1.w * vec2.w;

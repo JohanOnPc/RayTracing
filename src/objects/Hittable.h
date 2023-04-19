@@ -11,7 +11,14 @@ struct HitRecord
 	Vector point;
 	Vector normal;
 	double t = 0.0;
+	bool isFrontFace;
 	std::shared_ptr<class Material> material;
+
+	inline void SetNormal(const Ray& ray, const Vector& outwardNormal)
+	{
+		isFrontFace = DotProduct(ray.direction, outwardNormal) < 0;
+		normal = isFrontFace ? outwardNormal : ~outwardNormal;
+	}
 };
 
 class Hittable

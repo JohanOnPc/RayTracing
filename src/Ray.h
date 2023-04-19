@@ -5,15 +5,15 @@
 class Ray
 {
 public:
-	Ray() : Origin{}, Direction{} {}
-	Ray(const Vector& Origin, const Vector& Direction) : Origin{ Origin }, Direction{ Direction } {}
+	Ray() : origin{}, direction{} {}
+	Ray(const Vector& origin, const Vector& direction) : origin{ origin }, direction{ direction.GetNormal()} {}
 	
-	Ray(const Ray&) = default;
-	Ray& operator= (const Ray&) = default;
+	Ray(const Ray& ray) : origin{ray.origin}, direction{ray.direction.GetNormal()} {}
+	Ray& operator= (const Ray& ray) { origin = ray.origin; direction = ray.direction.GetNormal(); return *this; }
 
 	Vector at(const double t) const;
 public:
-	Vector Origin;
-	Vector Direction;
+	Vector origin;
+	Vector direction;
 };
 

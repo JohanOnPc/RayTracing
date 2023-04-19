@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <limits>
 #include <random>
@@ -24,4 +24,24 @@ inline Vector GetRandomVectorInHemisphere(const Vector& normal)
 	else {
 		return ~vec;
 	}
+}
+
+inline Vector Reflect(const Vector& ray, const Vector& normal)
+{
+	return ray - 2.0 * DotProduct(ray, normal) * normal;
+}
+
+inline Vector Refract(const Vector& ray, const Vector& normal, const double refractionRatio)
+{
+	double cosθ = DotProduct(~ray, normal);
+	Vector rayPerp = (ray + cosθ * normal) * refractionRatio;
+	Vector rayParallel = -sqrt(fabs(1.0 - rayPerp.LengthSquared())) * normal;
+	return rayPerp + rayParallel;
+}
+
+inline double Reflactance(const double cosθ, const double refractionIndex)
+{
+	double R0 = (1.0 - refractionIndex) / (1.0 + refractionIndex);
+	R0 *= R0;
+	return R0 + (1.0 - R0) * pow(1.0 - cosθ, 5);
 }

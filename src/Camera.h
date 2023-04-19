@@ -15,7 +15,7 @@ public:
 	Ray GetRay(double u, double v) const;
 
 private:
-	Vector Origin;
+	Vector origin;
 	Vector LowLeft;
 	Vector HorizontalUnitVector;
 	Vector VerticalUnitVector;

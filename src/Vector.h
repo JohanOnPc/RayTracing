@@ -36,6 +36,8 @@ public:
 	static Vector GetRandom(double min = 0.0, double max = 1.0);
 	static Vector GetRandomVectorInUnitSphere();
 
+	friend Vector operator* (const double, const Vector&);
+
 	friend double DotProduct(const Vector&, const Vector&);
 	friend std::ostream& operator<<(std::ostream& out, const Vector&);
 

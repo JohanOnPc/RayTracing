@@ -7,19 +7,19 @@ Camera::Camera()
 	double viewportWidth = 2.0 * aspectRatio;
 	double focalLength = 1.0;
 
-	Origin = Vector();
+	origin = Vector();
 	HorizontalUnitVector = Vector(viewportWidth, 0.0);
 	VerticalUnitVector = Vector(0.0, viewportHeight);
-	LowLeft = Origin - HorizontalUnitVector * .5 - VerticalUnitVector * .5 - Vector(0.0, 0.0, focalLength);
+	LowLeft = origin - HorizontalUnitVector * .5 - VerticalUnitVector * .5 - Vector(0.0, 0.0, focalLength);
 }
 
 Camera::Camera(double aspectRatio, double viewportHeight, double viewportWidth, double focalLength) :
-	Origin{}, 
+	origin{}, 
 	HorizontalUnitVector{Vector(viewportWidth, 0.0)},
 	VerticalUnitVector(Vector(0.0, viewportHeight)),
-	LowLeft{Origin - HorizontalUnitVector * .5 - VerticalUnitVector * .5 - Vector(0.0, 0.0, focalLength)} {}
+	LowLeft{origin - HorizontalUnitVector * .5 - VerticalUnitVector * .5 - Vector(0.0, 0.0, focalLength)} {}
 
 Ray Camera::GetRay(double u, double v) const
 {
-	return Ray(Origin, LowLeft + HorizontalUnitVector * u + VerticalUnitVector * v);
+	return Ray(origin, LowLeft + HorizontalUnitVector * u + VerticalUnitVector * v);
 }
