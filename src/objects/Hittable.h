@@ -2,9 +2,9 @@
 
 #include <memory>
 
-#include "Ray.h"
-#include "Vector.h"
-#include "Material.h"
+#include "../Ray.h"
+#include "../Vector.h"
+#include "../materials/Material.h"
 
 struct HitRecord
 {

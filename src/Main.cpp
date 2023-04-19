@@ -7,12 +7,12 @@
 #include "Camera.h"
 #include "Ray.h"
 #include "Image.h"
-#include "Sphere.h"
+#include "objects/Sphere.h"
 #include "Scene.h"
-#include "Hittable.h"
+#include "objects/Hittable.h"
 #include "Utilities.h"
-#include "Lambertian.h"
-#include "Metal.h"
+#include "materials/Lambertian.h"
+#include "materials/Metal.h"
 
 constexpr auto WIDTH = 1600;
 constexpr auto HEIGHT = 900;

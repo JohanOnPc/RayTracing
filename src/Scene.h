@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 
-#include "Hittable.h"
+#include "objects/Hittable.h"
 
 class Scene
 {

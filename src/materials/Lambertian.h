@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Material.h"
-#include "Vector.h"
+#include "../Vector.h"
 
 class Lambertian :
     public Material

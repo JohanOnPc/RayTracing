@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Vector.h"
-#include "Ray.h"
+#include "../Vector.h"
+#include "../Ray.h"
 #include "Hittable.h"
 
 class Sphere : 
