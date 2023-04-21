@@ -114,6 +114,16 @@ Vector Vector::GetRandomVectorInUnitSphere()
 	}
 }
 
+Vector Vector::GetRandomVectorInUnitDisk()
+{
+	while (true) {
+		Vector vec(Random(-1.0, 1.0), Random(-1.0, 1.0));
+		if (vec.LengthSquared() < 1.0) {
+			return vec;
+		}
+	}
+}
+
 Vector Vector::CrossProduct3D(const Vector& vec1, const Vector& vec2)
 {
 	return Vector(vec1.y * vec2.z - vec1.z * vec2.y,

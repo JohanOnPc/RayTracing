@@ -2,7 +2,7 @@
 
 #include "Utilities.h"
 
-Camera::Camera(const Vector& lookFrom, const Vector& lookAt, const Vector& up, double vFOV, double aspectRatio)
+Camera::Camera(const Vector& lookFrom, const Vector& lookAt, const Vector& up, double vFOV, double aspectRatio, double aperture, double focusDistance)
 {
 	double theta = DegreesToRadians(vFOV);
 	double height = tan(theta / 2.0);
@@ -14,12 +14,16 @@ Camera::Camera(const Vector& lookFrom, const Vector& lookAt, const Vector& up, d
 	verticalUnit = Vector::CrossProduct3D(w, horizontalUnit);
 
 	origin = lookFrom;
-	horizontalVector = horizontalUnit * viewportWidth;
-	verticalVector = verticalUnit * viewportHeight;
-	LowLeft = origin - horizontalVector * .5 - verticalVector * .5 - w;
+	horizontalVector = horizontalUnit * viewportWidth * focusDistance;
+	verticalVector = verticalUnit * viewportHeight * focusDistance;
+	LowLeft = origin - horizontalVector * 0.5 - verticalVector * 0.5 - w * focusDistance;
+
+	lensRadius = aperture / 2.0;
 }
 
 Ray Camera::GetRay(double u, double v) const
 {
-	return Ray(origin, LowLeft + horizontalVector * u + verticalVector * v - origin);
+	Vector offset = Vector::GetRandomVectorInUnitDisk() * lensRadius;
+	offset = horizontalUnit * offset.x + verticalUnit * offset.y;
+	return Ray(origin + offset, LowLeft + horizontalVector * u + verticalVector * v - origin - offset);
 }

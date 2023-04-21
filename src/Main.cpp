@@ -44,7 +44,10 @@ Vector RayColor(const Ray& ray, const Scene& scene, int depth) {
 
 int main() {
 	Image image(WIDTH, HEIGHT);
-	Camera camera({ -2, 2, 1 }, { 0, 0, -1 }, { 0, 1, 0 }, 20.0, aspectRatio);
+	Vector lookFrom = { 3, 3, 2 };
+	Vector lookAt = { 0, 0, -1 };
+	double focusDistance = (lookAt - lookFrom).Length();
+	Camera camera(lookFrom, lookAt, { 0, 1, 0 }, 20.0, aspectRatio, -2, focusDistance);
 	Scene scene;
 
 	auto lambertianCenter =	std::make_shared<Lambertian>(Lambertian(Vector(0.1, 0.2, 0.5)));
