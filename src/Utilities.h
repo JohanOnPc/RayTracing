@@ -8,6 +8,11 @@
 constexpr auto pi = 3.14159265359;
 constexpr auto infinity = std::numeric_limits<double>::infinity();
 
+inline double DegreesToRadians(const double degrees)
+{
+	return degrees * pi / 180.0;
+}
+
 inline double Random(double min = 0.0, double max = 1.0)
 {
 	static std::uniform_real_distribution<double> distribution(min, max);

@@ -35,6 +35,7 @@ public:
 
 	static Vector GetRandom(double min = 0.0, double max = 1.0);
 	static Vector GetRandomVectorInUnitSphere();
+	static Vector CrossProduct3D(const Vector& vec1, const Vector& vec2);
 
 	friend Vector operator* (const double, const Vector&);
 

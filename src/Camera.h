@@ -6,8 +6,7 @@
 class Camera
 {
 public:
-	Camera();
-	Camera(double aspectRatio, double viewportHeight, double viewportWidth, double focalLength);
+	Camera(const Vector& lookFrom, const Vector& lookAt, const Vector& up, double vFOV, double aspectRatio);
 
 	Camera(const Camera&) = default;
 	Camera& operator= (const Camera&) = default;
@@ -17,7 +16,8 @@ public:
 private:
 	Vector origin;
 	Vector LowLeft;
-	Vector HorizontalUnitVector;
-	Vector VerticalUnitVector;
+	Vector horizontalVector;
+	Vector verticalVector;
+	Vector horizontalUnit, verticalUnit, w;
 };
 

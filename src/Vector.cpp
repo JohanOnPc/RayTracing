@@ -114,6 +114,13 @@ Vector Vector::GetRandomVectorInUnitSphere()
 	}
 }
 
+Vector Vector::CrossProduct3D(const Vector& vec1, const Vector& vec2)
+{
+	return Vector(vec1.y * vec2.z - vec1.z * vec2.y,
+		vec1.z * vec2.x - vec1.x * vec2.z,
+		vec1.x * vec2.y - vec1.y * vec2.x);
+}
+
 Vector operator*(const double t , const Vector& vec) 
 {
 	return vec * t;

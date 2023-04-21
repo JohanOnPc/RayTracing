@@ -19,6 +19,7 @@ constexpr auto WIDTH = 1920;
 constexpr auto HEIGHT = 1080;
 constexpr auto samples = 16;
 constexpr auto maxDepth = 40;
+constexpr double aspectRatio = (double)WIDTH / HEIGHT;
 
 Vector RayColor(const Ray& ray, const Scene& scene, int depth) {
 	if (depth <= 0) {
@@ -43,26 +44,30 @@ Vector RayColor(const Ray& ray, const Scene& scene, int depth) {
 
 int main() {
 	Image image(WIDTH, HEIGHT);
-	Camera camera;
+	Camera camera({ -2, 2, 1 }, { 0, 0, -1 }, { 0, 1, 0 }, 20.0, aspectRatio);
 	Scene scene;
 
 	auto lambertianCenter =	std::make_shared<Lambertian>(Lambertian(Vector(0.1, 0.2, 0.5)));
 	auto lambertianGround = std::make_shared<Lambertian>(Lambertian(Vector(0.8, 0.8, 0.0)));
-	auto metalLeft =		std::make_shared<Metal>(Metal(Vector(0.8, 0.8, 0.8), 0.3));
-	auto metalRight =		std::make_shared<Metal>(Metal(Vector(0.8, 0.6, 0.2), 0.0));
+	auto metalLeft =		std::make_shared<Metal>(Metal(Vector(0.8, 0.2, 0.6), 0.7));
+	auto metalRight =		std::make_shared<Metal>(Metal(Vector(0.8, 0.6, 0.2), 0.2));
 	auto glass =			std::make_shared<Glass>(Glass(1.5));
 
 	auto sphere =		std::make_shared<Sphere>(Sphere({ 0.0, 0.0, -1.0 }, 0.5, lambertianCenter));
 	auto world =		std::make_shared<Sphere>(Sphere({ 0.0, -100.5, -1.0 }, 100.0, lambertianGround));
 	auto left =			std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, 0.5, glass));
 	auto insidLeft =	std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, -0.47, glass));
+	auto insideSphere = std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, 0.2, glass));
 	auto right =		std::make_shared<Sphere>(Sphere({ 1.0, 0.0, -1.0 }, 0.5, metalRight));
+	auto backSphere =	std::make_shared<Sphere>(Sphere({ -7.0, 2.5, -5.0 }, 2.2, metalLeft));
 
 	scene.AddObject(sphere);
 	scene.AddObject(world);
 	scene.AddObject(left);
 	scene.AddObject(insidLeft);
+	scene.AddObject(insideSphere);
 	scene.AddObject(right);
+	scene.AddObject(backSphere);
 
 	for (int y = 0; y < HEIGHT; y++) {
 		for (int x = 0; x < WIDTH; x++) {
@@ -80,7 +85,7 @@ int main() {
 	}
 
 	std::filesystem::current_path(std::filesystem::path("images"));
-	image.WriteImageTofile("simpleHollowGlassSphere.ppm");
+	image.WriteImageTofile("simpleSphere.ppm");
 
 	return 0;
 }

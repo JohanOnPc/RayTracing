@@ -48,9 +48,9 @@ Image::~Image()
 void WriteColor(std::ostream& out, const Vector& vec)
 {
 	float x, y, z;
-	x = static_cast<float>(vec.x);
-	y = static_cast<float>(vec.y);
-	z = static_cast<float>(vec.z);
+	x = static_cast<float>(sqrt(vec.x));
+	y = static_cast<float>(sqrt(vec.y));
+	z = static_cast<float>(sqrt(vec.z));
 
 	out.write((const char*)&x, 4);
 	out.write((const char*)&y, 4);
