@@ -91,7 +91,7 @@ int main() {
 
 	auto t2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> diff = t2 - t1;
-	std::cout << std::format("[Info] Render took {} seconds\n", diff.count());
+	std::cout << std::format("[INFO] Render took {:.5f} seconds\n", diff.count());
 
 	std::filesystem::current_path(std::filesystem::path("images"));
 	image.WriteImageTofile("simpleSphere.ppm");
