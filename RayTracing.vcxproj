@@ -28,6 +28,7 @@
     <ClCompile Include="src\objects\Sphere.cpp" />
     <ClCompile Include="src\Ray.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\ThreadSafeQueue.cpp" />
     <ClCompile Include="src\Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +42,7 @@
     <ClInclude Include="src\objects\Sphere.h" />
     <ClInclude Include="src\Ray.h" />
     <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\ThreadSafeQueue.h" />
     <ClInclude Include="src\Utilities.h" />
     <ClInclude Include="src\Vector.h" />
   </ItemGroup>
