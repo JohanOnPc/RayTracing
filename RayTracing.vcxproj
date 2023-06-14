@@ -30,6 +30,7 @@
     <ClCompile Include="src\Scene.cpp" />
     <ClCompile Include="src\ThreadSafeQueue.cpp" />
     <ClCompile Include="src\Vector.cpp" />
+    <ClCompile Include="src\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Camera.h" />
@@ -45,6 +46,7 @@
     <ClInclude Include="src\ThreadSafeQueue.h" />
     <ClInclude Include="src\Utilities.h" />
     <ClInclude Include="src\Vector.h" />
+    <ClInclude Include="src\ThreadPool.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
