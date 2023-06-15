@@ -12,7 +12,10 @@ public:
 	~ThreadPool();
 
 	template<typename FunctionType>
-	void Submit(FunctionType func);
+	inline void Submit(FunctionType func)
+	{
+		WorkQueue.Push(std::function<void()>(func));
+	}
 
 private:
 	void WorkerThread();
@@ -22,9 +25,3 @@ private:
 	ThreadSafeQueue<std::function<void()>> WorkQueue;
 	std::vector<std::jthread> threads;
 };
-
-template<typename FunctionType>
-inline void ThreadPool::Submit(FunctionType func)
-{
-	WorkQueue.Push(std::function<void()>(func));
-}

@@ -15,6 +15,7 @@
 #include "materials/Lambertian.h"
 #include "materials/Metal.h"
 #include "materials/Glass.h"
+#include "ConcurrentRenderer.h"
 
 constexpr auto WIDTH = 1920;
 constexpr auto HEIGHT = 1080;
@@ -72,6 +73,9 @@ int main() {
 	scene.AddObject(insideSphere);
 	scene.AddObject(right);
 	scene.AddObject(backSphere);
+
+	ConcurrentRenderer renderer(scene, 10, 40);
+	renderer.RenderCurrentScene(camera, image);
 
 	auto t1 = std::chrono::high_resolution_clock::now();
 	for (int y = 0; y < HEIGHT; y++) {

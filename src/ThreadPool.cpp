@@ -23,4 +23,16 @@ ThreadPool::~ThreadPool()
 
 void ThreadPool::WorkerThread()
 {
+	while (!done)
+	{
+		std::function<void()> task;
+		if (WorkQueue.TryPop(task))
+		{
+			task();
+		}
+		else
+		{
+			std::this_thread::yield();
+		}
+	}
 }
