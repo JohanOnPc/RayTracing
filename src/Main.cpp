@@ -54,7 +54,7 @@ int main() {
 	scene.AddObject(backSphere);
 
 	auto t1 = std::chrono::high_resolution_clock::now();
-	ConcurrentRenderer renderer(scene, 7, 40);
+	ConcurrentRenderer renderer(scene, 16, 120);
 	renderer.RenderCurrentScene(camera, image);
 	auto t2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> diff = t2 - t1;

@@ -28,6 +28,10 @@ void ThreadPool::WaitTillDone()
 	}
 
 	done = true;
+
+	for (auto& thread : threads) {
+		thread.join();
+	}
 }
 
 void ThreadPool::WorkerThread()

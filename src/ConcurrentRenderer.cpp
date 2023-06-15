@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <format>
+#include <chrono>
+#include <format>
 
 #include "Vector.h"
 #include "Utilities.h"
@@ -15,11 +17,17 @@ ConcurrentRenderer::ConcurrentRenderer(Scene& scene, int threadCount, int blockS
 
 void ConcurrentRenderer::RenderCurrentScene(Camera& camera, Image& target)
 {
+	int currentBlock = 0;
 	for (int startY = 0; startY < target.GetHeight(); startY += blockSize) {
 		for (int startX = 0; startX < target.GetWidth(); startX += blockSize) {
-			renderThreads.Submit([&, startX, startY] {
+			renderThreads.Submit([&, startX, startY, currentBlock] {
+				auto t1 = std::chrono::high_resolution_clock::now();
 				RenderBlock(scene, camera, target, startX, startY, blockSize);
+				auto t2 = std::chrono::high_resolution_clock::now();
+				std::chrono::duration<double> diff = t2 - t1;
+				std::cout << std::format("[INFO] Rendered block {} in {:.5f} seconds\n", currentBlock, diff.count());
 				});
+			currentBlock++;
 		}
 	}
 
@@ -31,7 +39,7 @@ ConcurrentRenderer::~ConcurrentRenderer()
 	renderThreads.~ThreadPool();
 }
 
-constexpr auto samples = 16;
+constexpr auto samples = 225;
 constexpr auto maxDepth = 20;
 
 void RenderBlock(Scene& scene, Camera& camera, Image& target, int startX, int startY, int blockSize)
