@@ -17,6 +17,8 @@ public:
 		WorkQueue.Push(std::function<void()>(func));
 	}
 
+	void WaitTillDone();
+
 private:
 	void WorkerThread();
 

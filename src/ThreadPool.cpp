@@ -21,6 +21,15 @@ ThreadPool::~ThreadPool()
 	done = true;
 }
 
+void ThreadPool::WaitTillDone()
+{
+	while (!WorkQueue.IsEmpty()) {
+		std::this_thread::yield();
+	}
+
+	done = true;
+}
+
 void ThreadPool::WorkerThread()
 {
 	while (!done)
