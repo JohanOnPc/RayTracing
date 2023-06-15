@@ -38,11 +38,23 @@ void Image::WriteImageTofile(std::string fileName) const
 	file.close();
 }
 
+int Image::GetWidth() const
+{
+	return width;
+}
+
+int Image::GetHeight() const
+{
+	return heigth;
+}
+
 Image::~Image()
 {
 	for (int y = 0; y < heigth; y++) {
 		delete image[y];
 	}
+
+	delete image;
 }
 
 void WriteColor(std::ostream& out, const Vector& vec)

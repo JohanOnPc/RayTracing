@@ -13,6 +13,9 @@ public:
 	Vector GetPixel(int x, int y) const;
 	void WriteImageTofile(std::string fileName) const;
 
+	int GetWidth() const;
+	int GetHeight() const;
+
 	~Image();
 	
 private:
