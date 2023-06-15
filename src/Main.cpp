@@ -74,10 +74,14 @@ int main() {
 	scene.AddObject(right);
 	scene.AddObject(backSphere);
 
+	auto t1 = std::chrono::high_resolution_clock::now();
 	ConcurrentRenderer renderer(scene, 10, 40);
 	renderer.RenderCurrentScene(camera, image);
+	auto t2 = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> diff = t2 - t1;
+	std::cout << std::format("[INFO] Render took {:.5f} seconds\n", diff.count());
 
-	auto t1 = std::chrono::high_resolution_clock::now();
+	t1 = std::chrono::high_resolution_clock::now();
 	for (int y = 0; y < HEIGHT; y++) {
 		for (int x = 0; x < WIDTH; x++) {
 			Vector color;
@@ -93,8 +97,8 @@ int main() {
 		std::cout << std::format("Line {} of {}\n", y + 1, HEIGHT);
 	}
 
-	auto t2 = std::chrono::high_resolution_clock::now();
-	std::chrono::duration<double> diff = t2 - t1;
+	t2 = std::chrono::high_resolution_clock::now();
+	diff = t2 - t1;
 	std::cout << std::format("[INFO] Render took {:.5f} seconds\n", diff.count());
 
 	std::filesystem::current_path(std::filesystem::path("images"));

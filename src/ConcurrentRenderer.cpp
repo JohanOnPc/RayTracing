@@ -3,6 +3,8 @@
 #include <iostream>
 #include <format>
 
+#include "Vector.h"
+
 void RenderBlock(Scene& scene, Camera& camera, Image& target, int startX, int startY, int blockSize);
 
 ConcurrentRenderer::ConcurrentRenderer(Scene& scene, int threadCount, int blockSize) : renderThreads(threadCount), scene(scene), blockSize(blockSize)
@@ -11,15 +13,15 @@ ConcurrentRenderer::ConcurrentRenderer(Scene& scene, int threadCount, int blockS
 
 void ConcurrentRenderer::RenderCurrentScene(Camera& camera, Image& target)
 {
-	for (int startY = 0; startY < target.GetHeight(); startY += blockSize)
-	{
-		for (int startX = 0; startX < target.GetWidth(); startX += blockSize)
-		{
+	for (int startY = 0; startY < target.GetHeight(); startY += blockSize) {
+		for (int startX = 0; startX < target.GetWidth(); startX += blockSize) {
 			renderThreads.Submit([&, startX, startY] {
 				RenderBlock(scene, camera, target, startX, startY, blockSize);
 				});
 		}
 	}
+
+	renderThreads.WaitTillDone();
 }
 
 ConcurrentRenderer::~ConcurrentRenderer()
@@ -29,5 +31,11 @@ ConcurrentRenderer::~ConcurrentRenderer()
 
 void RenderBlock(Scene& scene, Camera& camera, Image& target, int startX, int startY, int blockSize)
 {
-	std::cout << std::format("[INFO] Render ({}, {}) from thread: ", startX, startY) << std::this_thread::get_id() << '\n';
+	for (int y = startY; y < startY + blockSize; y++) {
+		for (int x = startX; x < startX + blockSize; x++) {
+
+		}
+	}
+
+	std::this_thread::sleep_for(std::chrono::duration<double>(0.001));
 }
