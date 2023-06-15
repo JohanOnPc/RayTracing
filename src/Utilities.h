@@ -15,9 +15,13 @@ inline double DegreesToRadians(const double degrees)
 
 inline double Random(double min = 0.0, double max = 1.0)
 {
-	static std::uniform_real_distribution<double> distribution(min, max);
-	static std::mt19937 generator;
-	return distribution(generator);
+	std::uniform_real_distribution<double> distribution(min, max);
+	static thread_local std::mt19937* generator = nullptr;
+
+	if (!generator) {
+		generator = new std::mt19937();
+	}
+	return distribution(*generator);
 }
 
 inline Vector GetRandomVectorInHemisphere(const Vector& normal)
