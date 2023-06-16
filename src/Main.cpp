@@ -23,35 +23,61 @@ constexpr auto samples = 25;
 constexpr auto maxDepth = 20;
 constexpr double aspectRatio = (double)WIDTH / HEIGHT;
 
-int main() {
-	Image image(WIDTH, HEIGHT);
-	Vector lookFrom = { 7, 7, 2 };
-	Vector lookAt = { 0, 0, -1 };
-	double focusDistance = (lookAt - lookFrom).Length();
-	Camera camera(lookFrom, lookAt, { 0, 1, 0 }, 10.0, aspectRatio, 0.2, focusDistance);
+Scene CreateRandomScene()
+{
 	Scene scene;
 
-	auto lambertianCenter =	std::make_shared<Lambertian>(Lambertian(Vector(0.1, 0.2, 0.5)));
-	auto lambertianGround = std::make_shared<Lambertian>(Lambertian(Vector(0.8, 0.8, 0.0)));
-	auto metalLeft =		std::make_shared<Metal>(Metal(Vector(0.8, 0.2, 0.6), 0.7));
-	auto metalRight =		std::make_shared<Metal>(Metal(Vector(0.8, 0.6, 0.2), 0.2));
-	auto glass =			std::make_shared<Glass>(Glass(1.5));
+	auto groundMaterial = std::make_shared<Lambertian>(Lambertian({ 0.5, 0.5, 0.5 }));
+	scene.AddObject(std::make_shared<Sphere>(Vector(0, -1000, 0), 1000, groundMaterial));
 
-	auto sphere =		std::make_shared<Sphere>(Sphere({ 0.0, 0.0, -1.0 }, 0.5, lambertianCenter));
-	auto world =		std::make_shared<Sphere>(Sphere({ 0.0, -100.5, -1.0 }, 100.0, lambertianGround));
-	auto left =			std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, 0.5, glass));
-	auto insidLeft =	std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, -0.47, glass));
-	auto insideSphere = std::make_shared<Sphere>(Sphere({ -1.0, 0.0, -1.0 }, 0.2, glass));
-	auto right =		std::make_shared<Sphere>(Sphere({ 1.0, 0.0, -1.0 }, 0.5, metalRight));
-	auto backSphere =	std::make_shared<Sphere>(Sphere({ -7.0, 2.5, -5.0 }, 2.2, metalLeft));
+	for (int i = -20; i < 11; i++) {
+		for (int j = -20; j < 11; j++) {
+			double chooseMaterial = Random();
 
-	scene.AddObject(sphere);
-	scene.AddObject(world);
-	scene.AddObject(left);
-	scene.AddObject(insidLeft);
-	scene.AddObject(insideSphere);
-	scene.AddObject(right);
-	scene.AddObject(backSphere);
+			Vector center = { i + 0.9 * Random(), 0.2, j + 0.9 * Random() };
+
+			if ((center - Vector(4, 0.2, 0)).Length() > 0.9) {
+				std::shared_ptr<Material> material;
+
+				if (chooseMaterial < 0.8) {
+					Vector albedo = { Random() * Random(), Random() * Random(), Random() * Random() };
+					material = std::make_shared<Lambertian>(Vector(albedo));
+					scene.AddObject(std::make_shared<Sphere>(Sphere(center, 0.2, material)));
+				}
+
+				else if (chooseMaterial < 0.95) {
+					Vector albedo = { Random(0.5, 1), Random(0.5, 1), Random(0.5, 1) };
+					double fuzz = Random(0, 0.5);
+					material = std::make_shared<Metal>(Vector(albedo), fuzz);
+					scene.AddObject(std::make_shared<Sphere>(Sphere(center, 0.2, material)));
+				}
+
+				else {
+					material = std::make_shared<Glass>(1.5);
+					scene.AddObject(std::make_shared<Sphere>(Sphere(center, 0.2, material)));
+				}
+			}
+		}
+	}
+
+	auto material1 = std::make_shared<Glass>(1.5);
+	auto material2 = std::make_shared<Lambertian>(Vector{ 0.4, 0.2, 0.1 });
+	auto material3 = std::make_shared<Metal>(Vector(0.7, 0.6, 0.5), 0.0);
+
+	scene.AddObject(std::make_shared<Sphere>(Vector(0, 1, 0), 1.0, material1));
+	scene.AddObject(std::make_shared<Sphere>(Vector(-4, 1, 0), 1.0, material2));
+	scene.AddObject(std::make_shared<Sphere>(Vector(4, 1, 0), 1.0, material3));
+
+	return scene;
+}
+
+int main() {
+	Image image(WIDTH, HEIGHT);
+	Vector lookFrom = { 13, 2, 3 };
+	Vector lookAt = { 0, 0, 0 };
+	double focusDistance = (lookAt - lookFrom).Length();
+	Camera camera(lookFrom, lookAt, { 0, 1, 0 }, 20.0, aspectRatio, 0.1, 10);
+	Scene scene = CreateRandomScene();
 
 	auto t1 = std::chrono::high_resolution_clock::now();
 	ConcurrentRenderer renderer(scene, 16, 120);
@@ -59,27 +85,6 @@ int main() {
 	auto t2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> diff = t2 - t1;
 	std::cout << std::format("[INFO] Render took {:.5f} seconds\n", diff.count());
-
-	/*t1 = std::chrono::high_resolution_clock::now();
-	for (int y = 0; y < HEIGHT; y++) {
-		for (int x = 0; x < WIDTH; x++) {
-			Vector color;
-			for (int i = 0; i < samples; i++) {
-				double u = (double(x) + Random()) / (WIDTH - 1);
-				double v = (double(y) + Random()) / (HEIGHT - 1);
-				color += RayColor(camera.GetRay(u, v), scene, maxDepth);
-			}
-			double sampleFactor = 1.0 / samples;
-			image.WritePixel(x, y, color * sampleFactor);
-		}
-
-		std::cout << std::format("Line {} of {}\n", y + 1, HEIGHT);
-	}
-
-	t2 = std::chrono::high_resolution_clock::now();
-	diff = t2 - t1;
-	std::cout << std::format("[INFO] Render took {:.5f} seconds\n", diff.count());
-	*/
 
 	std::filesystem::current_path(std::filesystem::path("images"));
 	image.WriteImageTofile("simpleSphere.ppm");

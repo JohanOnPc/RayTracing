@@ -39,8 +39,8 @@ ConcurrentRenderer::~ConcurrentRenderer()
 	renderThreads.~ThreadPool();
 }
 
-constexpr auto samples = 225;
-constexpr auto maxDepth = 20;
+constexpr auto samples = 16;
+constexpr auto maxDepth = 200;
 
 void RenderBlock(Scene& scene, Camera& camera, Image& target, int startX, int startY, int blockSize)
 {
