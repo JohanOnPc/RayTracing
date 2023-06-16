@@ -2,6 +2,7 @@
 
 #include <limits>
 #include <random>
+#include <chrono>
 
 #include "Vector.h"
 
@@ -19,7 +20,8 @@ inline double Random(double min = 0.0, double max = 1.0)
 	static thread_local std::mt19937* generator = nullptr;
 
 	if (!generator) {
-		generator = new std::mt19937();
+		generator = new std::mt19937(static_cast<std::mt19937::result_type>(
+			std::chrono::high_resolution_clock::now().time_since_epoch().count()));
 	}
 	return distribution(*generator);
 }
