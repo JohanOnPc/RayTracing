@@ -1,3 +1,3 @@
 # RayTracing
 
-!(MultipleSpheresWithMotionBlur.png)
+![demo render](MultipleSpheresWithMotionBlur.png)
