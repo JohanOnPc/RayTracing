@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\objects\MovableSphere.cpp" />
     <ClCompile Include="src\ConcurrentRenderer.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Image.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="src\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\objects\MovableSphere.h" />
     <ClInclude Include="src\ConcurrentRenderer.h" />
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Image.h" />

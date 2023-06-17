@@ -8,7 +8,7 @@ bool Lambertian::ScatterRay(const Ray& ray, const HitRecord& hit, Vector& attenu
 		scatterDirection = hit.normal;
 	}
 
-	scattered = Ray(hit.point, scatterDirection);
+	scattered = Ray(hit.point, scatterDirection, ray.time);
 	attenuation = albedo;
 	return true;
 }

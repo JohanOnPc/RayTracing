@@ -17,7 +17,7 @@ bool Glass::ScatterRay(const Ray& ray, const HitRecord& hit, Vector& attenuation
 	else {
 		direction = Refract(ray.direction, hit.normal, refractionRatio);
 	}
-	scattered = Ray(hit.point, direction);
+	scattered = Ray(hit.point, direction, ray.time);
 	
 	return true;
 }

@@ -9,6 +9,7 @@
 #include "Ray.h"
 #include "Image.h"
 #include "objects/Sphere.h"
+#include "objects/MovableSphere.h"
 #include "Scene.h"
 #include "objects/Hittable.h"
 #include "Utilities.h"
@@ -41,7 +42,9 @@ Scene CreateRandomScene()
 
 				if (chooseMaterial < 0.8) {
 					Vector albedo = { Random() * Random(), Random() * Random(), Random() * Random() };
+					Vector centerEnd = center + Vector(0, Random(0.0, 0.5));
 					material = std::make_shared<Lambertian>(Vector(albedo));
+					//scene.AddObject(std::make_shared<MovableSphere>(MovableSphere(center, centerEnd, 0.0, 1.0, 0.2, material)));
 					scene.AddObject(std::make_shared<Sphere>(Sphere(center, 0.2, material)));
 				}
 
@@ -49,12 +52,15 @@ Scene CreateRandomScene()
 					Vector albedo = { Random(0.5, 1), Random(0.5, 1), Random(0.5, 1) };
 					double fuzz = Random(0, 0.5);
 					material = std::make_shared<Metal>(Vector(albedo), fuzz);
-					scene.AddObject(std::make_shared<Sphere>(Sphere(center, 0.2, material)));
+					Vector centerEnd = center + Vector(0, Random(0.0, 0.3));
+					scene.AddObject(std::make_shared<MovableSphere>(MovableSphere(center, centerEnd, 0.0, 1.0, 0.2, material)));
+					//scene.AddObject(std::make_shared<Sphere>(Sphere(center, 0.2, material)));
 				}
 
 				else {
 					material = std::make_shared<Glass>(1.5);
 					scene.AddObject(std::make_shared<Sphere>(Sphere(center, 0.2, material)));
+					scene.AddObject(std::make_shared<Sphere>(Sphere(center, -0.19, material)));
 				}
 			}
 		}
@@ -76,11 +82,11 @@ int main() {
 	Vector lookFrom = { 13, 2, 3 };
 	Vector lookAt = { 0, 0, 0 };
 	double focusDistance = (lookAt - lookFrom).Length();
-	Camera camera(lookFrom, lookAt, { 0, 1, 0 }, 20.0, aspectRatio, 0.1, 10);
+	Camera camera(lookFrom, lookAt, { 0, 1, 0 }, 20.0, aspectRatio, 0.1, 10, 0.0, 1.0);
 	Scene scene = CreateRandomScene();
 
 	auto t1 = std::chrono::high_resolution_clock::now();
-	ConcurrentRenderer renderer(scene, 16, 120);
+	ConcurrentRenderer renderer(scene, 14, 120);
 	renderer.RenderCurrentScene(camera, image);
 	auto t2 = std::chrono::high_resolution_clock::now();
 	std::chrono::duration<double> diff = t2 - t1;

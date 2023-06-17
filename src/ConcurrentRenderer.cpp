@@ -39,8 +39,8 @@ ConcurrentRenderer::~ConcurrentRenderer()
 	renderThreads.~ThreadPool();
 }
 
-constexpr auto samples = 16;
-constexpr auto maxDepth = 200;
+constexpr auto samples = 1000;
+constexpr auto maxDepth = 20;
 
 void RenderBlock(Scene& scene, Camera& camera, Image& target, int startX, int startY, int blockSize)
 {
@@ -68,7 +68,7 @@ Vector RayColor(const Ray& ray, const Scene& scene, int depth) {
 	}
 
 	HitRecord hit;
-	if (scene.IsHitByRay(ray, 0.0000001, infinity, hit)) {
+	if (scene.IsHitByRay(ray, 0.001, infinity, hit)) {
 
 		Ray scatter;
 		Vector attenuation;

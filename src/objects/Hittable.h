@@ -24,9 +24,12 @@ struct HitRecord
 class Hittable
 {
 public:
-	Hittable(std::shared_ptr<class Material> material) : material{material} {}
 	virtual bool IsHitByRay(const Ray& ray, double tMin, double tMax, HitRecord& hit) const = 0;
+};
 
+class Movable :
+	public Hittable
+{
 public:
-	std::shared_ptr<Material> material;
+	virtual Vector GetCenterAtTime(double time) const = 0;
 };
